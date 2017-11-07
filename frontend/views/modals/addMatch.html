@@ -1,6 +1,6 @@
-<button type="button" class="btn btn-md" data-toggle="modal" data-target="#myModal">Add Match</button>
+<button type="button" class="btn btn-md" data-toggle="modal" data-target="#addMatch">Add Match</button>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="addMatch" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -20,7 +20,6 @@
                     </thead>
                     <tbody>
                         <tr class="row">
-                            <!--<td class=""><input type="text" ng-model="player1"></td>-->
                             <td class="">
                                 <select ng-model="player1.name"><option ng-repeat="player in ladder.players" value="{{player.name}}">{{player.name}}</option></select>
                             </td>
@@ -38,8 +37,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="addMatch()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">Close</button>
+                <button type="submit" class="btn btn-default" ng-click="addMatch()">Save</button>
+                <button type="button" class="btn btn-default" ng-click="clear()">Close</button>
             </div></form>
         </div>
 

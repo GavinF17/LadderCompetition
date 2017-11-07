@@ -45,14 +45,14 @@ function start() {
 start();
 
 function addPlayer(name, socket) {
-    if (lo.findIndex(ladder.players, ['name', name]) < 0) {
-        ladder.players.push({ 'name': name, 'position': ladder.players.length + 1});
-        io.emit('notice', { message : 'New payer added: ' + name, priority : 'success' });
-    } else if (!name || name.length === 0) {
-        socket.emit('notice', { message : 'Can\'t add player without name', priority : 'danger' });
-    } else
-        socket.emit('notice', { message : 'Can\'t add player "' + name + '": already exists', priority : 'danger' });
-    
+    var validationErrors = validateAddPlayer(name);
+    if (validationErrors !== '') {
+        winston.log('error', 'Error adding player: ' + validationErrors, name);
+        return socket.emit('notice', { message : validationErrors, priority : 'danger' });
+    }
+
+    ladder.players.push({ 'name': name, 'position': ladder.players.length + 1});
+    io.emit('notice', { message : 'New payer added: ' + name, priority : 'success' });
     saveData();
 }
 
@@ -77,13 +77,16 @@ function removePlayer(name, socket) {
 
 // [{ 'name': 'player1', 'score': 10 }, { 'name': 'player2', 'score': 1 }]
 function addMatch(result, socket) {
+    var validationErrors = validateAddMatch(result);
+    if (validationErrors !== '') {
+        winston.log('error', 'Error adding match: ' + validationErrors, result);
+        return socket.emit('notice', { message : validationErrors, priority : 'danger' });
+    }
+    
     var sortedScore = lo.sortBy(result, 'score');
     
     var winner = ladder.players[lo.findIndex(ladder.players, ['name', sortedScore[1].name])];
     var loser  = ladder.players[lo.findIndex(ladder.players, ['name', sortedScore[0].name])];
-    
-    if (Math.abs(winner.position - loser.position) > ladder.challengeSpan)
-        return socket.emit('notice', { message : 'Couldn\'t add result as it is outside challenge span of ' + ladder.challengeSpan, priority : 'danger' });
     
     ladder.matches.push({ 
         winner: sortedScore[1].name,
@@ -123,12 +126,12 @@ function saveData() {
 
 function startSocketio() {
     io.on('connection', function (socket) {
-        console.log('Socket connection');
+        winston.log('info', 'Socket connection from ' + socket.handshake.address);
 
         socket.emit('ladder update', ladder);
 
         socket.on('get ladder', function() {
-            console.log('Ladder requested');
+            winston.log('info', 'Ladder requested by ' + socket.handshake.address);
             socket.emit('ladder update', ladder);
         });
 
@@ -148,3 +151,42 @@ function startSocketio() {
 
 // Listen
 app.listen(port);
+
+function validateAddPlayer(name) {
+    var errors = '';
+    // Check type
+    if (typeof name !== 'string')
+        errors += 'Name of player to add must be a string.\n';
+    // Check length
+    else if (name.length === 0)
+        errors += 'Name must not be blank.\n';
+    else if (name.length > 15)
+        errors += 'Name must not be larger than 15 characters.\n';
+    // Ensure doesn't exist
+    else if (lo.findIndex(ladder.players, ['name', name]) !== -1)
+        errors += 'Can\'t add player "' + name + '": already exists';
+    
+    return errors;
+}
+
+function validateAddMatch(results) {
+    var errors = '';
+    
+    // Check required fields exist and are of the correct type:
+    if (!results || typeof results !== 'object'|| results.length !== 2 || !results[0].name || results[0].score === undefined || !results[1].name || results[1].score === undefined || 
+            typeof results[0].name !== 'string' || typeof results[1].name !== 'string' || 
+            !Number.isInteger(parseInt(results[0].score)) || !Number.isInteger(parseInt(results[1].score)) ||
+            results[0].score < 0 || results[0].score > 10 || results[1].score < 0 || results[1].score > 10)
+        errors += 'Results must be a JSON array of the format: [{ name: STRING, score: INTEGER(0 to 10) }, { name: STRING, score: INTEGER(0 to 10) }]';
+    else if (results[0].name === results[1].name)
+        errors += 'The names provided cannot be the same ' + results[1].name;
+    else if (lo.findIndex(ladder.players, ['name', results[0].name]) === -1 || lo.findIndex(ladder.players, ['name', results[1].name]) === -1)
+        errors += 'One or both names provided couldn\'t be found in the ladder.';
+    else if (Math.abs(ladder.players[lo.findIndex(ladder.players, ['name', results[1].name])].position - 
+            ladder.players[lo.findIndex(ladder.players, ['name', results[0].name])].position) > ladder.challengeSpan)
+        errors += 'Couldn\'t add result as it is outside challenge span of ' + ladder.challengeSpan;
+    else if (results[0].score !== 10 && results[1].score !== 10)
+        errors += 'One of the scores must be 10';
+    
+    return errors;
+}
