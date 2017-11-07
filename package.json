@@ -1,0 +1,21 @@
+{
+    "name": "Ladder",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "Thomas",
+    "contributors": [],
+    "dependencies": {
+        "lodash": ">=0.0.1",
+        "express": ">=0.0.1",
+        "socket.io": ">=0.0.1",
+        "finalhandler": ">=0.0.1",
+        "serve-static": ">=0.0.1",
+        "winston": ">=0.0.1"
+    }
+}

@@ -1,0 +1,21 @@
+<div id="matches">
+    <h1>Matches</h1>
+    <add-match></add-match>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr class="row">
+                <td class="col-sm-2">Date</td>
+                <td class="col-sm-4 text-center">Winner</td>
+                <td class="col-sm-2 text-center">Score</td>
+                <td class="col-sm-4 text-center">Loser</td>
+            </tr>
+        </thead>
+        <tr ng-repeat="match in ladder.matches | orderBy : '-time'" class="row">
+            <td class="col-sm-2">{{ niceDate(match.time) }}</td>
+            <td class="col-sm-4 text-center">{{ match.winner }}</td>
+            <td class="col-sm-2 text-center">{{ match.winnerScore }} - {{ match.loserScore }}</td>
+            <td class="col-sm-4 text-center">{{ match.loser }}</td>
+        </tr>
+    </table>
+</div>

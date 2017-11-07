@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Ladder</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="shortcut icon" href="views/images/icon.png" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/style.css">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <script src="scripts/thirdparty/angular.js" type="text/javascript"></script>
+        <script src="scripts/thirdparty/angular-route.js" type="text/javascript"></script>
+        <script src="scripts/thirdparty/jquery.min.js" type="text/javascript"></script>
+        <script src="scripts/thirdparty/bootstrap.min.js" type="text/javascript"></script>
+        <script src="scripts/thirdparty/jquery.toaster.js" type="text/javascript"></script>
+        <script src="scripts/thirdparty/lodash.min.js" type="text/javascript"></script>
+        
+        <script src="scripts/controllers/LadderController.js" type="text/javascript"></script>
+        <script src="scripts/controllers/LadderConfig.js" type="text/javascript"></script>
+        <script src="scripts/controllers/HeaderDirective.js" type="text/javascript"></script>
+        <script src="scripts/controllers/AddPlayerDirective.js" type="text/javascript"></script>
+        <script src="scripts/controllers/AddMatchDirective.js" type="text/javascript"></script>
+    </head>
+    <body ng-app="ladder">
+        <div ng-controller="LadderController" ng-init="init()" class="container">
+            <page-header class="row"></page-header>
+            <ng-view class="row"></ng-view>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+<nav class="navbar navbar-default navbar-static-top">
+    <div id="dunluce-logo">
+        <img class="img-responsive mx-auto center-block"  src="views/images/banner.png" alt=""/>
+    </div>
+  <div class="container">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+          <li ng-repeat="link in nav" ng-click="navClick(link)"><a href="{{ '#!'+ link.link }}">{{ link.name }}</a></li>
+      </ul>
+    </div>
+</nav>
+

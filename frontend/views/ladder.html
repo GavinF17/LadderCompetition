@@ -1,0 +1,23 @@
+<div id="ladder">
+    <h1>Ladder</h1>
+    <add-player></add-player>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr class="row">
+                <td class="col-sm-2">Position</td>
+                <td class="col-sm-5">Name</td>
+                <td class="col-sm-5">Form</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="player in ladder.players | orderBy : 'position'" class="row">
+                <td class="col-sm-2">{{ player.position }}</td>
+                <td class="col-sm-5">{{ player.name }}</td>
+                <td class="col-sm-5">not done :(</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
