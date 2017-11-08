@@ -41,6 +41,8 @@
                         errors += 'Couldn\'t add result as it is outside challenge span of ' + $scope.ladder.challengeSpan;
                     else if (results[0].score !== 10 && results[1].score !== 10)
                         errors += 'One of the scores must be 10';
+                    else if (results[0].score === 10 && results[1].score === 10)
+                        errors += 'One of the scores must be less than 10';
                     return errors;
                 }
             }]
