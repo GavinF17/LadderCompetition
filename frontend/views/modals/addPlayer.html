@@ -9,10 +9,11 @@
                 <h4 class="modal-title">Add Player</h4>
             </div>
             <form><div class="modal-body">
-                <label>
-                    Name
-                    <input type="text" ng-model="addName">
-                </label>
+                    <div class="form-group">
+                        <label for="usr">Name:</label>
+                        <input type="text" class="form-control" id="usr" ng-model="addName">
+                    </div>
+                <div class="alert alert-danger" ng-show="validationErrors.length">{{ validationErrors }}</div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-default" ng-click="addPlayer(addName)">Save</button>

@@ -1,20 +1,27 @@
 <div id="ladder">
     <h1>Ladder</h1>
     <add-player></add-player>
-    
+    <label>Player: <input ng-model="search.name"></label>
     <table class="table table-striped">
         <thead>
             <tr class="row">
                 <td class="col-sm-2">Position</td>
                 <td class="col-sm-5">Name</td>
-                <td class="col-sm-5">Form</td>
+                <td class="col-sm-3">Form</td>
+                <td class="col-sm-2">Last Played</td>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="player in ladder.players | orderBy : 'position'" class="row">
+            <tr ng-repeat="player in ladder.players | orderBy : 'position' | filter : search : strict" class="row">
                 <td class="col-sm-2">{{ player.position }}</td>
                 <td class="col-sm-5">{{ player.name }}</td>
-                <td class="col-sm-5">not done :(</td>
+                <td class="col-sm-3">
+                    <span ng-switch="getWinLoss(player.name, match)" ng-repeat="match in player.last5 | orderBy : 'time'" data-toggle="tooltip" data-placement="top" title="{{getFormHover(match)}}">
+                        <span ng-switch-when="W" class="label label-success">W</span>
+                        <span ng-switch-when="L" class="label label-danger">L</span>
+                    </span>
+                </td>
+                <td class="col-sm-2">{{ lastPlayed(player.last5) }}</td>
             </tr>
         </tbody>
     </table>

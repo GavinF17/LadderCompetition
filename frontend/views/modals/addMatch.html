@@ -21,20 +21,21 @@
                     <tbody>
                         <tr class="row">
                             <td class="">
-                                <select ng-model="player1.name"><option ng-repeat="player in ladder.players" value="{{player.name}}">{{player.name}}</option></select>
+                                <select class="form-control" ng-model="player1.name"><option ng-repeat="player in ladder.players" value="{{player.name}}">{{player.name}}</option></select>
                             </td>
                             <td class="">
-                                <input type="number" name="input" ng-model="player1.score" min="0" max="10" required>
+                                <input class="form-control" type="number" name="input" ng-model="player1.score" min="0" max="10" required>
                             </td>
                             <td class="">
-                                <input type="number" name="input" ng-model="player2.score" min="0" max="10" required>
+                                <input class="form-control" type="number" name="input" ng-model="player2.score" min="0" max="10" required>
                             </td>
                             <td class="">
-                                <select ng-model="player2.name"><option ng-repeat="player in ladder.players" value="{{player.name}}">{{player.name}}</option></select>
+                                <select class="form-control" ng-model="player2.name"><option ng-repeat="player in ladder.players" value="{{player.name}}">{{player.name}}</option></select>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="alert alert-danger" ng-show="validationErrors.length">{{ validationErrors }}</div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-default" ng-click="addMatch()">Save</button>

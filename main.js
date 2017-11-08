@@ -51,7 +51,7 @@ function addPlayer(name, socket) {
         return socket.emit('notice', { message : validationErrors, priority : 'danger' });
     }
 
-    ladder.players.push({ 'name': name, 'position': ladder.players.length + 1});
+    ladder.players.push({ 'name': name, 'position': ladder.players.length + 1, last5: [] });
     io.emit('notice', { message : 'New payer added: ' + name, priority : 'success' });
     saveData();
 }
@@ -88,13 +88,17 @@ function addMatch(result, socket) {
     var winner = ladder.players[lo.findIndex(ladder.players, ['name', sortedScore[1].name])];
     var loser  = ladder.players[lo.findIndex(ladder.players, ['name', sortedScore[0].name])];
     
-    ladder.matches.push({ 
+    var matchResult = { 
         winner: sortedScore[1].name,
         winnerScore: sortedScore[1].score,
         loser: sortedScore[0].name,
         loserScore: sortedScore[0].score,
         time: Date.now()
-    });
+    };
+    
+    ladder.matches.push(matchResult);
+    updateForm(matchResult, winner);
+    updateForm(matchResult, loser);
     
     if (winner.position < loser.position) {
         io.emit('notice', { message : winner.name + ' remains above ' + loser.name, priority : 'success' });
@@ -113,6 +117,15 @@ function addMatch(result, socket) {
     }
     
     saveData();
+}
+
+function updateForm(result, player) {
+    if (!player.last5)
+        player['last5'] = [];
+    else if (player.last5.length >= 5)
+        player.last5.splice(0,1);
+    
+    player.last5.push(result);
 }
 
 function saveData() {

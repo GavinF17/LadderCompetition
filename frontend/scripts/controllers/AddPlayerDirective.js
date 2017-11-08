@@ -15,13 +15,14 @@
                         $rootScope.socket.emit('add player', $scope.addName);
                     $scope.clear();
                     } else {
-                        alert(validationErrors);
+                        $scope.validationErrors = validationErrors;
                     }
                 };
                 
                 $scope.clear = function() {
                     $('#addPlayer').modal('hide');
                     $scope.addName = '';
+                    $scope.validationErrors = '';
                 };
                 
                 function validateAddPlayer(name) {

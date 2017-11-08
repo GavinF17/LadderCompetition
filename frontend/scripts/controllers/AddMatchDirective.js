@@ -15,7 +15,7 @@
                         $rootScope.socket.emit('add match', [$scope.player1, $scope.player2]);
                         $scope.clear();
                     } else {
-                        alert(validationErrors);
+                        $scope.validationErrors = validationErrors;
                     }
                 };
                 
@@ -23,6 +23,7 @@
                     $('#addMatch').modal('hide');
                     $scope.player1 = {};
                     $scope.player2 = {};
+                    $scope.validationErrors = '';
                 };
                 
                 function validateAddMatch(results) {
